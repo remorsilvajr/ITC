@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Payroll System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+    }
+
+    .payroll {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: calc(25% - 10px);
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #f4f4f9;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="payroll">
+    <h1>Simple Payroll System</h1>
+    <form id="payrollForm">
+      <input type="text" id="employeeName" placeholder="Employee Name" required />
+      <input type="number" id="daysWorked" placeholder="Days Worked" required />
+      <input type="number" id="dailyRate" placeholder="Daily Rate" required />
+      <input type="number" id="deduction" placeholder="Deduction Amount" required />
+      <button type="button" onclick="addEmployee()">Add Employee</button>
+      <button type="button" onclick="deleteEmployee()">Delete by Line No.</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Employee Name</th>
+          <th>Days Worked</th>
+          <th>Daily Rate</th>
+          <th>Gross Pay</th>
+          <th>Deduction Amount</th>
+          <th>Net Pay</th>
+        </tr>
+      </thead>
+      <tbody id="payrollTable">
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let payrollList = [];
+
+    function addEmployee() {
+      //get input values
+      const employeeName = document.getElementById('employeeName').value.trim();
+      const daysWorked = parseInt(document.getElementById('daysWorked').value);
+      const dailyRate = parseFloat(document.getElementById('dailyRate').value);
+      const deduction = parseFloat(document.getElementById('deduction').value);
+
+      //validate inputs
+      if (!employeeName || isNaN(daysWorked) || isNaN(dailyRate) || isNaN(deduction)) {
+        alert('Please fill all fields with valid values.');
+        return;
+      }
+
+      //calculate gross pay and net pay
+      const grossPay = daysWorked * dailyRate;
+      const netPay = grossPay - deduction;
+
+      //add to payroll list
+      payrollList.push({
+        employeeName,
+        daysWorked,
+        dailyRate,
+        grossPay,
+        deduction,
+        netPay,
+      });
+
+      //update table
+      updateTable();
+
+      //clear form
+      document.getElementById('payrollForm').reset();
+    }
+
+    function updateTable() {
+      const tableBody = document.getElementById('payrollTable');
+      tableBody.innerHTML = '';
+
+      payrollList.forEach((employee, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${employee.employeeName}</td>
+          <td>${employee.daysWorked}</td>
+          <td>${employee.dailyRate.toFixed(2)}</td>
+          <td>${employee.grossPay.toFixed(2)}</td>
+          <td>${employee.deduction.toFixed(2)}</td>
+          <td>${employee.netPay.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function deleteEmployee() {
+      const lineNumber = prompt('Enter the line number to delete:');
+      const index = parseInt(lineNumber) - 1;
+
+      if (isNaN(index) || index < 0 || index >= payrollList.length) {
+        alert('Invalid line number.');
+        return;
+      }
+
+      //remove the employee from the payroll list
+      payrollList.splice(index, 1);
+
+      //update table
+      updateTable();
+    }
+  </script>
+</body>
+</html>
