@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sum Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .converter {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input[type="number"] {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h1>Sum Calculator</h1>
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <button onclick="calculateSum()">Calculate</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateSum() {
+      const number = parseInt(document.getElementById('numberInput').value);
+      if (isNaN(number) || number < 0) {
+        document.getElementById('result').textContent = "Please enter a non-negative integer.";
+        return;
+      }
+
+      let sum = 0;
+      let i = 1;
+
+      // Do while loop to calculate the sum
+      do {
+        sum += i;
+        i++;
+      } while (i <= number);
+
+      document.getElementById('result').textContent = `The sum of numbers from 1 to ${number} is ${sum}.`;
+    }
+  </script>
+</body>
+</html>
